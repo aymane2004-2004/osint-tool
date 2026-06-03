@@ -1,6 +1,6 @@
 # ============================================
-# OSINT TOOLKIT - PowerShell Makefile
-# Fast execution for Windows
+# OSINT TOOLKIT - Makefile pour Windows
+# Compatible avec cmd.exe et PowerShell
 # ============================================
 
 # Configuration
@@ -8,88 +8,66 @@ PYTHON = python
 APP = app.py
 PORT = 5000
 
-# Default target
+# Cible par défaut
 .DEFAULT_GOAL := help
 
-# Help command
+# Aide
 .PHONY: help
 help:
-	@powershell -Command "Write-Host '═══════════════════════════════════════════════════════════════' -ForegroundColor Cyan"
-	@powershell -Command "Write-Host '🔍 OSINT TOOLKIT - Commands' -ForegroundColor Green"
-	@powershell -Command "Write-Host '═══════════════════════════════════════════════════════════════' -ForegroundColor Cyan"
-	@powershell -Command "Write-Host '  make run      - Start the application' -ForegroundColor Yellow"
-	@powershell -Command "Write-Host '  make install  - Install dependencies' -ForegroundColor Yellow"
-	@powershell -Command "Write-Host '  make clean    - Remove cache files' -ForegroundColor Yellow"
-	@powershell -Command "Write-Host '  make update   - Update requirements.txt' -ForegroundColor Yellow"
-	@powershell -Command "Write-Host '  make dev      - Development mode' -ForegroundColor Yellow"
-	@powershell -Command "Write-Host '  make start    - Install + Run' -ForegroundColor Yellow"
-	@powershell -Command "Write-Host '  make fresh    - Clean + Run' -ForegroundColor Yellow"
-	@powershell -Command "Write-Host '  make help     - Show this help' -ForegroundColor Yellow"
-	@powershell -Command "Write-Host '═══════════════════════════════════════════════════════════════' -ForegroundColor Cyan"
+	@echo ============================================================
+	@echo 🔍 OSINT TOOLKIT - Commandes disponibles
+	@echo ============================================================
+	@echo   [+] make run      - Démarrer l'application
+	@echo   [+] make install  - Installer les dépendances
+	@echo   [+] make clean    - Supprimer les fichiers cache
+	@echo   [+] make update   - Mettre à jour requirements.txt
+	@echo   [+] make dev      - Mode développement
+	@echo   [+] make start    - Installer + Démarrer
+	@echo   [+] make fresh    - Nettoyer + Démarrer
+	@echo   [+] make help     - Afficher cette aide
+	@echo ============================================================
 
-# Run the application (fast)
+# Démarrer l'application
 .PHONY: run
 run:
-	@powershell -Command "Write-Host '🚀 Starting OSINT Toolkit...' -ForegroundColor Green"
-	@powershell -Command "Write-Host '📍 http://127.0.0.1:$(PORT)' -ForegroundColor Cyan"
-	@powershell -Command "Write-Host '═══════════════════════════════════════════════════════════════' -ForegroundColor DarkGray"
+	@echo 🚀 Démarrage de OSINT Toolkit...
+	@echo 📍 http://127.0.0.1:%PORT%
+	@echo ============================================================
 	@$(PYTHON) $(APP)
 
-# Install dependencies
+# Installer les dépendances
 .PHONY: install
 install:
-	@powershell -Command "Write-Host '📦 Installing dependencies...' -ForegroundColor Yellow"
+	@echo 📦 Installation des dépendances...
 	@pip install -r requirements.txt
-	@powershell -Command "if ($$?) { Write-Host '✅ Installation complete!' -ForegroundColor Green } else { Write-Host '❌ Installation failed!' -ForegroundColor Red }"
+	@echo ✅ Installation terminée!
 
-# Clean cache files (fast)
+# Nettoyer les fichiers cache
 .PHONY: clean
 clean:
-	@powershell -Command "Write-Host '🧹 Cleaning cache...' -ForegroundColor Yellow"
-	@powershell -Command "Get-ChildItem -Path . -Include '__pycache__' -Recurse -Directory | Remove-Item -Recurse -Force -ErrorAction SilentlyContinue"
-	@powershell -Command "Remove-Item -Path *.pyc -Force -ErrorAction SilentlyContinue"
-	@powershell -Command "Write-Host '✅ Cleanup complete!' -ForegroundColor Green"
+	@echo 🧹 Nettoyage du cache...
+	@if exist __pycache__ rmdir /s /q __pycache__
+	@if exist templates\__pycache__ rmdir /s /q templates\__pycache__
+	@del /q *.pyc 2>nul
+	@echo ✅ Nettoyage terminé!
 
-# Update requirements.txt
+# Mettre à jour requirements.txt
 .PHONY: update
 update:
-	@powershell -Command "Write-Host '📝 Updating requirements.txt...' -ForegroundColor Yellow"
+	@echo 📝 Mise à jour de requirements.txt...
 	@pip freeze > requirements.txt
-	@powershell -Command "Write-Host '✅ requirements.txt updated!' -ForegroundColor Green"
+	@echo ✅ requirements.txt mis à jour!
 
-# Development mode (with auto-reload)
+# Mode développement
 .PHONY: dev
 dev:
-	@powershell -Command "Write-Host '🐛 Development mode...' -ForegroundColor Yellow"
-	@powershell -Command "$$env:FLASK_ENV='development'; $$env:FLASK_DEBUG='1'"
-	@$(PYTHON) $(APP)
+	@echo 🐛 Mode développement...
+	@set FLASK_ENV=development && set FLASK_DEBUG=1 && $(PYTHON) $(APP)
 
-# Install and run (one command)
+# Installer et démarrer
 .PHONY: start
 start: install run
 
-# Clean and run (one command)
+# Nettoyer et démarrer
 .PHONY: fresh
 fresh: clean run
-
-# Show app info
-.PHONY: info
-info:
-	@powershell -Command "Write-Host '═══════════════════════════════════════════════════════════════' -ForegroundColor Cyan"
-	@powershell -Command "Write-Host '📊 OSINT TOOLKIT Info' -ForegroundColor Green"
-	@powershell -Command "Write-Host '═══════════════════════════════════════════════════════════════' -ForegroundColor Cyan"
-	@powershell -Command "Write-Host 'App:        $(APP)' -ForegroundColor White"
-	@powershell -Command "Write-Host 'Port:       $(PORT)' -ForegroundColor White"
-	@powershell -Command "Write-Host 'Python:     ' -NoNewline; python --version"
-	@powershell -Command "Write-Host 'Files:      ' -NoNewline; (Get-ChildItem -Filter *.py).Count -ForegroundColor White"
-	@powershell -Command "Write-Host '═══════════════════════════════════════════════════════════════' -ForegroundColor Cyan"
-
-# Open browser
-.PHONY: open
-open:
-	@powershell -Command "Start-Process 'http://127.0.0.1:$(PORT)'"
-	@powershell -Command "Write-Host '✅ Browser opened!' -ForegroundColor Green"
-
-# Run and open browser
-.PHONY: launch
-launch: run open
