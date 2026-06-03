@@ -14,17 +14,15 @@ OSINT Toolkit is a Flask-based web application that automates the process of sea
 - **Extensible Architecture**: Easy to add new platforms and search sources
 - **No API Keys Required**: Uses web scraping techniques (no rate limits or API costs)
 
-## 🚀 Quick Start
+## 🚀 Quick Start with Make
 
 ### Prerequisites
-
-- Python 3.8 or higher
-- pip (Python package manager)
-- Git (optional)
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/aymane2004-2004/osint-tool.git
-   cd osint-tool
+- Install `make` on Windows:
+  ```bash
+  # Using Chocolatey
+  choco install make
+  
+  # Using Scoop
+  scoop install make
+  
+  # Or download from: https://gnuwin32.sourceforge.net/packages/make.htm
