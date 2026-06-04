@@ -15,48 +15,48 @@ PORT = 5000
 .PHONY: help
 help:
 	@echo ============================================================
-	@echo 🔍 OSINT TOOLKIT - Commandes disponibles
+	@echo   [?] OSINT TOOLKIT - Commandes disponibles
 	@echo ============================================================
-	@echo   [+] make run      - Démarrer l'application
-	@echo   [+] make install  - Installer les dépendances
-	@echo   [+] make clean    - Supprimer les fichiers cache
-	@echo   [+] make update   - Mettre à jour requirements.txt
-	@echo   [+] make dev      - Mode développement
-	@echo   [+] make start    - Installer + Démarrer
-	@echo   [+] make fresh    - Nettoyer + Démarrer
-	@echo   [+] make help     - Afficher cette aide
+	@echo   [+] make run      - Run OSINT Toolkit
+	@echo   [+] make install  - Install dependencies
+	@echo   [+] make clean    - Clean cache files
+	@echo   [+] make update   - Update requirements.txt
+	@echo   [+] make dev      - Development mode
+	@echo   [+] make start    - Install and start
+	@echo   [+] make fresh    - Clean and start
+	@echo   [+] make help     - Display this help message
 	@echo ============================================================
 
 # Démarrer l'application
 .PHONY: run
 run:
-	@echo 🚀 Démarrage de OSINT Toolkit...
-	@echo 📍 http://127.0.0.1:%PORT%
+	@echo  Running OSINT Toolkit...
+	@echo  http://127.0.0.1:%PORT%
 	@echo ============================================================
 	@$(PYTHON) $(APP)
 
 # Installer les dépendances
 .PHONY: install
 install:
-	@echo 📦 Installation des dépendances...
+	@echo  Installing dependencies...
 	@pip install -r requirements.txt
-	@echo ✅ Installation terminée!
+	@echo [+] Dependencies installed!
 
 # Nettoyer les fichiers cache
 .PHONY: clean
 clean:
-	@echo 🧹 Nettoyage du cache...
+	@echo  Cleaning cache files...
 	@if exist __pycache__ rmdir /s /q __pycache__
 	@if exist templates\__pycache__ rmdir /s /q templates\__pycache__
 	@del /q *.pyc 2>nul
-	@echo ✅ Nettoyage terminé!
+	@echo [+] Cleaning completed!
 
 # Mettre à jour requirements.txt
 .PHONY: update
 update:
-	@echo 📝 Mise à jour de requirements.txt...
+	@echo  Updating requirements.txt...
 	@pip freeze > requirements.txt
-	@echo ✅ requirements.txt mis à jour!
+	@echo [+] requirements.txt updated!
 
 # Mode développement
 .PHONY: dev
