@@ -19,12 +19,10 @@
     
     .bg-animation {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
         z-index: -1;
-        background: radial-gradient(circle at 20% 50%, rgba(0, 255, 255, 0.05) 0%, transparent 50%);
+        background: radial-gradient(circle at 20% 50%, rgba(0,255,255,0.05) 0%, transparent 50%);
         animation: pulse 4s ease-in-out infinite;
     }
     
@@ -33,16 +31,9 @@
         50% { opacity: 0.6; }
     }
     
-    .container {
-        max-width: 1400px;
-        position: relative;
-        z-index: 1;
-    }
+    .container { max-width: 1400px; position: relative; z-index: 1; }
     
-    .glitch-header {
-        text-align: center;
-        margin: 20px 0 30px;
-    }
+    .glitch-header { text-align: center; margin: 20px 0 30px; }
     
     .glitch-header h1 {
         font-size: 2.5rem;
@@ -64,37 +55,34 @@
         text-align: center;
         color: #00ffcc;
         font-size: 0.85rem;
-        border-top: 1px solid rgba(0, 255, 255, 0.3);
-        border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+        border-top: 1px solid rgba(0,255,255,0.3);
+        border-bottom: 1px solid rgba(0,255,255,0.3);
         display: inline-block;
         padding: 5px 20px;
         letter-spacing: 2px;
     }
     
     .glass-card {
-        background: rgba(10, 10, 20, 0.8);
+        background: rgba(10,10,20,0.8);
         backdrop-filter: blur(10px);
         border-radius: 20px;
-        border: 1px solid rgba(0, 255, 255, 0.2);
+        border: 1px solid rgba(0,255,255,0.2);
         transition: all 0.3s ease;
     }
     
-    .search-container {
-        padding: 25px;
-        margin-bottom: 25px;
-    }
+    .search-container { padding: 25px; margin-bottom: 25px; }
     
     .form-control, .form-select {
-        background: rgba(0, 0, 0, 0.6);
+        background: rgba(0,0,0,0.6);
         border: 1px solid #00ffcc;
         color: #00ffcc;
         font-family: 'Courier New', monospace;
     }
     
     .form-control:focus, .form-select:focus {
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(0,0,0,0.8);
         border-color: #00ffff;
-        box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+        box-shadow: 0 0 20px rgba(0,255,255,0.3);
         color: #00ffff;
     }
     
@@ -110,21 +98,21 @@
     
     .btn-hack:hover {
         transform: scale(1.05);
-        box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        box-shadow: 0 0 30px rgba(0,255,255,0.5);
         color: #000;
     }
     
     #resultMap {
-        border: 2px solid rgba(0, 255, 255, 0.3);
+        border: 2px solid rgba(0,255,255,0.3);
         height: 500px;
         margin-top: 20px;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0,0,0,0.5);
         border-radius: 15px;
         overflow: hidden;
     }
     
     .terminal {
-        background: rgba(0, 0, 0, 0.8);
+        background: rgba(0,0,0,0.8);
         border: 1px solid #00ffcc;
         border-radius: 15px;
         padding: 20px;
@@ -140,16 +128,11 @@
         align-items: center;
     }
     
-    .terminal-title {
-        color: #00ffcc;
-        font-family: monospace;
-        font-size: 0.9rem;
-    }
+    .terminal-title { color: #00ffcc; font-family: monospace; font-size: 0.9rem; }
     
     .terminal-dots span {
         display: inline-block;
-        width: 10px;
-        height: 10px;
+        width: 10px; height: 10px;
         border-radius: 50%;
         margin-left: 5px;
         animation: blink 1s infinite;
@@ -164,14 +147,11 @@
         50% { opacity: 0.3; }
     }
     
-    #results {
-        max-height: 400px;
-        overflow-y: auto;
-    }
+    #results { max-height: 400px; overflow-y: auto; }
     
     .result-card {
-        background: rgba(0, 255, 255, 0.05);
-        border: 1px solid rgba(0, 255, 255, 0.2);
+        background: rgba(0,255,255,0.05);
+        border: 1px solid rgba(0,255,255,0.2);
         border-radius: 12px;
         padding: 15px;
         margin-bottom: 12px;
@@ -182,22 +162,26 @@
     }
     
     .result-card:hover {
-        background: rgba(0, 255, 255, 0.1);
+        background: rgba(0,255,255,0.1);
         transform: translateX(10px);
         border-color: #00ffcc;
     }
-    
-    .result-card img {
+
+    /* ── FIX: CSS-only site icon replaces broken Flaticon img ── */
+    .site-icon {
         width: 50px;
         height: 50px;
         border-radius: 50%;
         border: 2px solid #00ffcc;
-        object-fit: cover;
+        background: rgba(0,20,20,0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        font-size: 1.4rem;
     }
     
-    .result-card .info {
-        flex: 1;
-    }
+    .result-card .info { flex: 1; }
     
     .result-card .title {
         font-weight: bold;
@@ -219,17 +203,14 @@
     
     .result-card .type {
         font-size: 0.7rem;
-        background: rgba(0, 255, 255, 0.2);
+        background: rgba(0,255,255,0.2);
         padding: 3px 10px;
         border-radius: 20px;
         display: inline-block;
         color: #00ffcc;
     }
     
-    .result-card .button-group {
-        display: flex;
-        gap: 8px;
-    }
+    .result-card .button-group { display: flex; gap: 8px; }
     
     .result-card .btn-action {
         background: linear-gradient(135deg, #00ffcc, #0099ff);
@@ -244,20 +225,19 @@
     }
     
     .result-card .btn-action.copy {
-        background: rgba(0, 255, 255, 0.2);
+        background: rgba(0,255,255,0.2);
         border: 1px solid #00ffcc;
         color: #00ffcc;
     }
     
     .result-card .btn-action:hover {
         transform: scale(1.05);
-        box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        box-shadow: 0 0 10px rgba(0,255,255,0.5);
     }
     
     .toast-notification {
         position: fixed;
-        bottom: 20px;
-        right: 20px;
+        bottom: 20px; right: 20px;
         background: #00ffcc;
         color: #000;
         padding: 12px 20px;
@@ -270,23 +250,16 @@
     }
     
     @keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
+        from { transform: translateX(100%); opacity: 0; }
+        to   { transform: translateX(0);    opacity: 1; }
     }
     
     .loading {
         position: fixed;
-        top: 50%;
-        left: 50%;
+        top: 50%; left: 50%;
         transform: translate(-50%, -50%);
         z-index: 9999;
-        background: rgba(0, 0, 0, 0.9);
+        background: rgba(0,0,0,0.9);
         padding: 30px;
         border-radius: 20px;
         text-align: center;
@@ -294,14 +267,11 @@
         display: none;
     }
     
-    .loading.active {
-        display: block;
-    }
+    .loading.active { display: block; }
     
     .spinner {
-        width: 50px;
-        height: 50px;
-        border: 3px solid rgba(0, 255, 255, 0.3);
+        width: 50px; height: 50px;
+        border: 3px solid rgba(0,255,255,0.3);
         border-top: 3px solid #00ffcc;
         border-radius: 50%;
         animation: spin 1s linear infinite;
@@ -309,51 +279,13 @@
     }
     
     @keyframes spin {
-        0% { transform: rotate(0deg); }
+        0%   { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
     
-    .tooltip-custom {
-        position: absolute;
-        background: rgba(0, 0, 0, 0.95);
-        backdrop-filter: blur(10px);
-        color: #00ffcc;
-        padding: 10px 15px;
-        border-radius: 10px;
-        font-size: 0.85rem;
-        display: none;
-        z-index: 1000;
-        border: 1px solid #00ffcc;
-        pointer-events: none;
-        font-family: monospace;
-    }
-    
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-    
-    ::-webkit-scrollbar-track {
-        background: #0a0a0a;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-        background: #00ffcc;
-        border-radius: 10px;
-    }
-    
-    .debug-console {
-        position: fixed;
-        bottom: 10px;
-        left: 10px;
-        background: rgba(0,0,0,0.8);
-        color: #0f0;
-        font-family: monospace;
-        font-size: 10px;
-        padding: 5px;
-        border-radius: 5px;
-        z-index: 9999;
-    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0a0a0a; }
+    ::-webkit-scrollbar-thumb { background: #00ffcc; border-radius: 10px; }
 </style>
 </head>
 <body>
@@ -361,8 +293,8 @@
 
 <div class="loading" id="loading">
     <div class="spinner"></div>
-    <p style="color: #00ffcc; font-family: monospace;">[+] EXTRACTING INTELLIGENCE...</p>
-    <small style="color: #66ccff;">Searching and extracting URLs from DuckDuckGo</small>
+    <p style="color:#00ffcc;font-family:monospace;">[+] EXTRACTING INTELLIGENCE...</p>
+    <small style="color:#66ccff;">Searching and extracting URLs from DuckDuckGo</small>
 </div>
 
 <div class="toast-notification" id="toast">
@@ -371,7 +303,7 @@
 
 <div class="container mt-4">
     <div class="glitch-header">
-        <h1><i class="fas fa-shield-haltered"></i> OSINT ANALYZER ULTIMATE</h1>
+        <h1><i class="fas fa-shield-halved"></i> OSINT ANALYZER ULTIMATE</h1>
         <div>
             <span class="subtitle">// ADVANCED INTELLIGENCE GATHERING //</span>
         </div>
@@ -382,15 +314,16 @@
             <div class="row g-3">
                 <div class="col-md-8">
                     <div class="input-group">
-                        <span class="input-group-text" style="background: rgba(0,0,0,0.6); border:1px solid #00ffcc; color:#00ffcc;">
+                        <span class="input-group-text" style="background:rgba(0,0,0,0.6);border:1px solid #00ffcc;color:#00ffcc;">
                             <i class="fas fa-terminal"></i>
                         </span>
-                        <input type="text" id="queryInput" class="form-control" placeholder="root@osint:~$ ./investigate --target " required>
+                        <input type="text" id="queryInput" class="form-control"
+                               placeholder="root@osint:~$ ./investigate --target " required>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="input-group">
-                        <span class="input-group-text" style="background: rgba(0,0,0,0.6); border:1px solid #00ffcc; color:#00ffcc;">
+                        <span class="input-group-text" style="background:rgba(0,0,0,0.6);border:1px solid #00ffcc;color:#00ffcc;">
                             <i class="fas fa-chart-line"></i>
                         </span>
                         <select id="depthSelect" class="form-select">
@@ -407,14 +340,14 @@
                 </div>
             </div>
             <div class="mt-3 text-center">
-                <small class="text-muted" style="color: #00ffcc!important;">
+                <small style="color:#00ffcc!important;">
                     <i class="fas fa-lock"></i> ENCRYPTED TUNNEL | HEADLESS MODE ACTIVE
                 </small>
             </div>
         </form>
     </div>
 
-    <div class="glass-card" style="padding: 15px;">
+    <div class="glass-card" style="padding:15px;">
         <div id="resultMap"></div>
     </div>
 
@@ -424,252 +357,327 @@
                 <i class="fas fa-database"></i> [ EXTRACTED_URLS.LOG ]
             </div>
             <div class="terminal-dots">
-                <span></span>
-                <span></span>
-                <span></span>
+                <span></span><span></span><span></span>
             </div>
         </div>
         <div id="results"></div>
     </div>
 </div>
 
-<div id="tooltip" class="tooltip-custom"></div>
-
 <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
 <script>
-const tooltip = document.getElementById("tooltip");
 const loading = document.getElementById("loading");
+
+/* Node colors per type */
+const HUB_DOMAIN = {
+    "Facebook":        "facebook.com",
+    "Youtube":         "youtube.com",
+    "Telegram":        "telegram.org",
+    "Twitter":         "twitter.com",
+    "Instagram":       "instagram.com",
+    "LinkedIn":        "linkedin.com",
+    "GitHub":          "github.com",
+    "Reddit":          "reddit.com",
+    "Wikipedia":       "wikipedia.org",
+    "TikTok":          "tiktok.com",
+    "Coursera":        "coursera.org",
+    "Udemy":           "udemy.com",
+    "Medium":          "medium.com",
+    "News Site":       "bbc.com",
+    "Email Address":   "gmail.com",
+    "Phone Number":    "whatsapp.com",
+    "Government Site": "usa.gov",
+    "Website":         "google.com",
+};
+
+const TYPE_COLOR = {
+    "Facebook":        { bg:"#1877f2", border:"#0d5dbf", font:"#ffffff" },
+    "Youtube":         { bg:"#ff0000", border:"#cc0000", font:"#ffffff" },
+    "Telegram":        { bg:"#0088cc", border:"#006699", font:"#ffffff" },
+    "Twitter":         { bg:"#1da1f2", border:"#0d86d1", font:"#ffffff" },
+    "Instagram":       { bg:"#c13584", border:"#9a2968", font:"#ffffff" },
+    "LinkedIn":        { bg:"#0077b5", border:"#005e8f", font:"#ffffff" },
+    "GitHub":          { bg:"#333333", border:"#111111", font:"#ffffff" },
+    "Reddit":          { bg:"#ff4500", border:"#cc3700", font:"#ffffff" },
+    "Wikipedia":       { bg:"#636466", border:"#444444", font:"#ffffff" },
+    "TikTok":          { bg:"#010101", border:"#ff0050", font:"#ffffff" },
+    "News Site":       { bg:"#e44d26", border:"#c13b1e", font:"#ffffff" },
+    "Government Site": { bg:"#003087", border:"#001f5b", font:"#ffffff" },
+    "Website":         { bg:"#00aacc", border:"#0088aa", font:"#ffffff" },
+    "_default":        { bg:"#00ffcc", border:"#009999", font:"#000000" },
+};
+
+function getTypeColor(type) {
+    return TYPE_COLOR[type] || TYPE_COLOR["_default"];
+}
 
 function showToast(message, isError = false) {
     const toast = document.getElementById("toast");
     toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${message}`;
     toast.style.background = isError ? '#ff4444' : '#00ffcc';
-    toast.style.color = isError ? '#fff' : '#000';
-    toast.style.display = "block";
-    setTimeout(() => {
-        toast.style.display = "none";
-    }, 3000);
+    toast.style.color      = isError ? '#fff'    : '#000';
+    toast.style.display    = "block";
+    setTimeout(() => { toast.style.display = "none"; }, 3000);
 }
 
-// Global functions for URL actions
 window.copyUrl = function(url) {
-    console.log("COPY triggered for URL:", url);
-    if (url && url !== "undefined" && url !== "null" && url.startsWith('http')) {
+    if (url && url.startsWith('http')) {
         navigator.clipboard.writeText(url).then(() => {
             showToast("✓ URL copied: " + url.substring(0, 60) + "...");
-            console.log("Successfully copied:", url);
-        }).catch(err => {
-            console.error("Copy failed:", err);
-            showToast("✗ Failed to copy URL", true);
-        });
+        }).catch(() => showToast("✗ Failed to copy URL", true));
     } else {
-        console.error("Invalid URL:", url);
-        showToast("✗ Invalid URL: " + (url || "empty"), true);
+        showToast("✗ Invalid URL", true);
     }
 };
 
 window.visitUrl = function(url) {
-    console.log("VISIT triggered for URL:", url);
-    if (url && url !== "undefined" && url !== "null" && url.startsWith('http')) {
+    if (url && url.startsWith('http')) {
         window.open(url, '_blank');
         showToast("✓ Opening: " + url.substring(0, 60) + "...");
-        console.log("Opening URL:", url);
     } else {
-        console.error("Invalid URL for visit:", url);
         showToast("✗ Cannot open invalid URL", true);
     }
 };
 
-document.getElementById("searchForm").onsubmit = async function(e){
+document.getElementById("searchForm").onsubmit = async function(e) {
     e.preventDefault();
-    
     loading.classList.add("active");
-    
-    let form = new FormData();
+
+    const form = new FormData();
     form.append("query", document.getElementById("queryInput").value);
     form.append("depth", document.getElementById("depthSelect").value);
 
     try {
-        const res = await fetch("/search", { method: "POST", body: form });
+        const res  = await fetch("/search", { method:"POST", body: form });
         const data = await res.json();
-        
-        console.log("Results received:", data.length);
-        if (data.length > 0) {
-            console.log("Sample URL:", data[0].link);
-            console.log("Sample Title:", data[0].title);
-        }
-        
+
         renderResults(data);
         renderGraph(data, document.getElementById("queryInput").value);
         loading.classList.remove("active");
-        
-        if (data.length === 0) {
-            showToast("No results found. Try a different query.", true);
-        } else {
-            showToast(`Found ${data.length} results!`);
-        }
-        
-    } catch (error) {
-        console.error("Error:", error);
+
+        if (data.length === 0) showToast("No results found. Try a different query.", true);
+        else showToast(`Found ${data.length} results!`);
+
+    } catch (err) {
+        console.error(err);
         loading.classList.remove("active");
-        document.getElementById("results").innerHTML = '<div class="alert alert-danger text-center">[!] CONNECTION ERROR - CHECK SERVER [!]</div>';
+        document.getElementById("results").innerHTML =
+            '<div class="alert alert-danger text-center">[!] CONNECTION ERROR - CHECK SERVER [!]</div>';
         showToast("Connection error. Is the backend running?", true);
     }
 };
 
-function renderResults(data){
+/* ── renderResults ──────────────────────────────────────────────────────── */
+function renderResults(data) {
     const container = document.getElementById("results");
     container.innerHTML = "";
-    
-    if(!data || data.length === 0){
-        container.innerHTML = '<div class="alert alert-warning text-center">[!] NO URLS FOUND - TRY DIFFERENT QUERY [!]</div>';
+
+    if (!data || data.length === 0) {
+        container.innerHTML =
+            '<div class="alert alert-warning text-center">[!] NO URLS FOUND - TRY DIFFERENT QUERY [!]</div>';
         return;
     }
-    
+
     data.forEach((result, index) => {
         const type = result.type || "Website";
-        const url = result.link;
-        
-        // Validate URL
-        if (!url || !url.startsWith('http')) {
-            console.warn(`Skipping invalid URL for result ${index}:`, url);
-            return;
-        }
-        
-        console.log(`Rendering result ${index}:`, url);
-        
+        const url  = result.link;
+
+        if (!url || !url.startsWith('http')) return;
+
         const card = document.createElement("div");
         card.className = "result-card";
-        
-        const img = document.createElement("img");
-        img.src = result.image || "https://cdn-icons-png.flaticon.com/512/565/565547.png";
-        img.onerror = () => img.src = "https://cdn-icons-png.flaticon.com/512/565/565547.png";
-        
+
+        /* Favicon via Google's free service — always works, no CORS issues */
+        const iconDiv = document.createElement("div");
+        iconDiv.className = "site-icon";
+        const domain = new URL(url).hostname;
+        const faviconImg = document.createElement("img");
+        faviconImg.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
+        faviconImg.alt = type;
+        faviconImg.style.cssText = "width:32px;height:32px;object-fit:contain;border-radius:4px;";
+        faviconImg.onerror = () => { faviconImg.replaceWith(document.createTextNode(TYPE_EMOJI[type] || "🌐")); };
+        iconDiv.appendChild(faviconImg);
+
         const info = document.createElement("div");
         info.className = "info";
         info.innerHTML = `
-            <div class="title">
-                <i class="fas fa-link"></i> ${escapeHtml(result.title)}
-            </div>
-            <div class="url">
-                <i class="fas fa-globe"></i> ${escapeHtml(url)}
-            </div>
+            <div class="title"><i class="fas fa-link"></i> ${escapeHtml(result.title)}</div>
+            <div class="url"><i class="fas fa-globe"></i> ${escapeHtml(url)}</div>
             <div class="type"><i class="fas fa-tag"></i> ${escapeHtml(type)}</div>
+            ${result.snippet ? `<div style="font-size:0.72rem;color:#aaa;margin-top:4px;">${escapeHtml(result.snippet.substring(0,120))}…</div>` : ""}
         `;
-        
+
         const buttonGroup = document.createElement("div");
         buttonGroup.className = "button-group";
-        
+
         const visitBtn = document.createElement("button");
         visitBtn.className = "btn-action";
         visitBtn.innerHTML = '<i class="fas fa-external-link-alt"></i> VISIT';
-        visitBtn.onclick = (function(u) {
-            return function() { window.visitUrl(u); };
-        })(url);
-        
+        visitBtn.onclick = (u => () => window.visitUrl(u))(url);
+
         const copyBtn = document.createElement("button");
         copyBtn.className = "btn-action copy";
         copyBtn.innerHTML = '<i class="fas fa-copy"></i> COPY';
-        copyBtn.onclick = (function(u) {
-            return function() { window.copyUrl(u); };
-        })(url);
-        
+        copyBtn.onclick = (u => () => window.copyUrl(u))(url);
+
         buttonGroup.appendChild(visitBtn);
         buttonGroup.appendChild(copyBtn);
-        
-        card.appendChild(img);
+        card.appendChild(iconDiv);
         card.appendChild(info);
         card.appendChild(buttonGroup);
         container.appendChild(card);
     });
-    
-    console.log("Rendered", data.length, "valid results");
 }
 
-function renderGraph(data, queryName){
-    if(!data || data.length === 0){
-        document.getElementById("resultMap").innerHTML = 
-        "<div class='text-center mt-5' style='color: #ffcc00; padding: 50px;'><i class='fas fa-chart-network fa-3x'></i><h3 class='mt-3'>NO DATA TO VISUALIZE</h3><p>Perform a successful search to generate intelligence map</p></div>";
+/* ── renderGraph ────────────────────────────────────────────────────────── */
+function renderGraph(data, queryName) {
+    const mapEl = document.getElementById("resultMap");
+
+    if (!data || data.length === 0) {
+        mapEl.innerHTML =
+            "<div class='text-center mt-5' style='color:#ffcc00;padding:50px;'>" +
+            "<i class='fas fa-project-diagram fa-3x'></i>" +
+            "<h3 class='mt-3'>NO DATA TO VISUALIZE</h3>" +
+            "<p>Perform a successful search to generate intelligence map</p></div>";
         return;
     }
-    
-    let nodes = [], edges = [], nid = 2;
-    
+
+    const nodes = [], edges = [];
+    let nid = 2;
+
+    /* Root node */
     nodes.push({
         id: 1,
         label: queryName,
         shape: "box",
-        color: { background: "#00ffcc", border: "#0099ff" },
-        font: { color: "#000", size: 18, face: "monospace" },
-        borderWidth: 3
+        color: { background:"#00ffcc", border:"#009999" },
+        font:  { color:"#000", size: 18, face:"monospace", bold: true },
+        borderWidth: 3,
+        margin: 10,
     });
-    
+
+    /* Group by type */
     const typeGroups = {};
     data.forEach(r => {
-        const type = r.type || "Website";
-        if(!typeGroups[type]) typeGroups[type] = [];
-        typeGroups[type].push(r);
+        const t = r.type || "Website";
+        if (!typeGroups[t]) typeGroups[t] = [];
+        typeGroups[t].push(r);
     });
-    
-    const icons = {
-        "Facebook": ["#4267B2", "https://cdn-icons-png.flaticon.com/512/733/733547.png"],
-        "Youtube": ["#FF0000", "https://cdn-icons-png.flaticon.com/512/1384/1384060.png"],
-        "Telegram": ["#0088cc", "https://cdn-icons-png.flaticon.com/512/2111/2111646.png"],
-        "News Site": ["#FF4500", "https://cdn-icons-png.flaticon.com/512/5968/5968885.png"],
-        "Website": ["#6cf", "https://cdn-icons-png.flaticon.com/512/565/565547.png"]
-    };
-    
-    for(const type in typeGroups){
-        let typeId = nid++;
-        let [color, icon] = icons[type] || ["#6cf", "https://cdn-icons-png.flaticon.com/512/565/565547.png"];
-        
+
+    for (const type in typeGroups) {
+        const typeId = nid++;
+        const col    = getTypeColor(type);
+        /* Type hub node — representative favicon for the category */
+        const hubDomain = HUB_DOMAIN[type] || "google.com";
         nodes.push({
-            id: typeId,
+            id:    typeId,
             label: type,
-            shape: "image",
-            image: icon,
-            font: { color: "#fff", size: 14 }
+            shape: "circularImage",
+            image: `https://www.google.com/s2/favicons?domain=${hubDomain}&sz=64`,
+            size:  28,
+            color: { border: col.bg, background:"#001a1a",
+                     highlight:{ border:"#00ffcc", background:"#002a2a" } },
+            font:  { color:"#ffffff", size:13, face:"monospace" },
+            borderWidth: 3,
         });
-        edges.push({ from: 1, to: typeId, arrows: { to: { enabled: true } }, smooth: true, length: 300, color: "#00ffcc" });
-        
+        edges.push({
+            from: 1, to: typeId,
+            arrows: { to:{ enabled:true, scaleFactor:0.8 } },
+            color:  { color:"#00ffcc", opacity:0.8 },
+            smooth: { type:"cubicBezier" },
+            length: 280,
+        });
+
+        /* Leaf nodes — circularImage with each site's own favicon */
         typeGroups[type].forEach(result => {
-            let id = nid++;
+            const leafId = nid++;
+            const label  = result.title.length > 28
+                ? result.title.substring(0, 25) + "…"
+                : result.title;
+            let leafDomain = "google.com";
+            try { leafDomain = new URL(result.link).hostname; } catch(e) {}
+
             nodes.push({
-                id: id,
-                label: result.title.length > 30 ? result.title.substring(0, 27) + "..." : result.title,
-                shape: "image",
-                image: result.image || icon,
-                font: { color: "#fff", size: 11 },
-                title: `${result.title}\n${result.link}`
+                id:    leafId,
+                label: label,
+                shape: "circularImage",
+                image: `https://www.google.com/s2/favicons?domain=${leafDomain}&sz=64`,
+                size:  20,
+                color: { border: col.border, background:"#001a1a",
+                         highlight:{ border:"#00ffcc", background:"#002a2a" } },
+                font:  { color:"#ffffff", size:11, face:"monospace" },
+                title: `<b style="color:#ffcc00">${escapeHtmlRaw(result.title)}</b><br>` +
+                       `<span style="color:#66ccff;font-size:11px">${escapeHtmlRaw(result.link)}</span>`,
+                url:   result.link,
             });
-            edges.push({ from: typeId, to: id, dashes: true, smooth: true, length: 200, color: "#66ccff" });
+            edges.push({
+                from:   typeId,
+                to:     leafId,
+                dashes: true,
+                color:  { color: col.border, opacity:0.6 },
+                smooth: { type:"cubicBezier" },
+                length: 180,
+            });
         });
     }
-    
-    const container = document.getElementById("resultMap");
-    container.innerHTML = "";
-    
-    new vis.Network(container, {
-        nodes: new vis.DataSet(nodes),
-        edges: new vis.DataSet(edges)
-    }, {
-        physics: { enabled: true, barnesHut: { gravitationalConstant: -8000, centralGravity: 0.3, springLength: 300 } },
-        interaction: { hover: true, zoomView: true, dragView: true }
+
+    mapEl.innerHTML = "";
+
+    const network = new vis.Network(
+        mapEl,
+        { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) },
+        {
+            physics: {
+                enabled: true,
+                barnesHut: {
+                    gravitationalConstant: -8000,
+                    centralGravity: 0.3,
+                    springLength: 250,
+                    damping: 0.09,
+                },
+            },
+            interaction: {
+                hover:    true,
+                zoomView: true,
+                dragView: true,
+                tooltipDelay: 100,
+            },
+            nodes: {
+                borderWidth: 2,
+                shadow: false,
+            },
+            edges: {
+                width: 1.5,
+            },
+        }
+    );
+
+    /* Click on a leaf node → open URL */
+    network.on("click", params => {
+        if (params.nodes.length === 1) {
+            const nodeId  = params.nodes[0];
+            const nodeObj = nodes.find(n => n.id === nodeId);
+            if (nodeObj && nodeObj.url) window.open(nodeObj.url, "_blank");
+        }
     });
+
+    network.on("hoverNode", () => { mapEl.style.cursor = "pointer"; });
+    network.on("blurNode",  () => { mapEl.style.cursor = "default"; });
 }
 
 function escapeHtml(str) {
-    if(!str) return 'N/A';
-    return str.replace(/[&<>]/g, function(m) {
-        if(m === '&') return '&amp;';
-        if(m === '<') return '&lt;';
-        if(m === '>') return '&gt;';
-        return m;
-    });
+    if (!str) return 'N/A';
+    return str.replace(/[&<>"']/g, m =>
+        ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
 }
 
-console.log("%c⚡ OSINT ANALYZER ULTIMATE ONLINE ⚡", "color: #00ffcc; font-size: 16px; font-family: monospace;");
-console.log("%c>_ URL HANDLING ACTIVE | CHECK CONSOLE FOR DEBUGGING", "color: #00ffcc; font-size: 12px;");
+function escapeHtmlRaw(str) {
+    if (!str) return '';
+    return str.replace(/[&<>"']/g, m =>
+        ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+}
+
+console.log("%c⚡ OSINT ANALYZER ULTIMATE ONLINE ⚡", "color:#00ffcc;font-size:16px;font-family:monospace;");
 </script>
 </body>
 </html>

@@ -1,85 +1,88 @@
 from flask import Flask, render_template, request, jsonify
 from playwright.sync_api import sync_playwright
 import time
-from urllib.parse import urlparse
+import re
+from urllib.parse import urlparse, unquote
 
 app = Flask(__name__)
 
 def clean_url(url):
-    """Clean and validate URL"""
+    """Clean and validate URL — unwraps ALL DuckDuckGo redirect formats."""
     if not url:
         return None
-    
-    # Remove DuckDuckGo redirect if present
-    if '//duckduckgo.com/l/' in url:
-        # Extract the actual URL from DuckDuckGo redirect
-        import re
-        match = re.search(r'uddg=([^&]+)', url)
-        if match:
-            from urllib.parse import unquote
-            return unquote(match.group(1))
-    
-    # Ensure URL has protocol
+
+    # Normalise protocol-relative before checking
     if url.startswith('//'):
         url = 'https:' + url
-    elif url.startswith('/'):
-        return None  # Skip relative links
-    elif not url.startswith('http'):
+
+    # ── Unwrap DDG redirect (https:// AND // forms) ──────────────────────────
+    # DDG puts every href through: https://duckduckgo.com/l/?uddg=<encoded>&rut=…
+    if 'duckduckgo.com/l/' in url:
+        match = re.search(r'[?&]uddg=([^&]+)', url)
+        if match:
+            return clean_url(unquote(match.group(1)))   # recurse once for safety
+        return None   # DDG internal link we can't unwrap → discard
+
+    # Drop any remaining duckduckgo.com URLs (settings, feedback, etc.)
+    if 'duckduckgo.com' in url:
+        return None
+
+    # Relative paths → discard
+    if url.startswith('/'):
+        return None
+
+    # Add scheme if missing
+    if not url.startswith('http'):
         url = 'https://' + url
-    
+
     return url
+
 
 def classify_site(link, title):
     link = link.lower() if link else ""
     title = title.lower() if title else ""
     
-    # Define keywords for each social site
     social_sites = {
-        "Facebook": ["facebook.com", "facebook", "fb.com"],
-        "Youtube": ["youtube.com", "youtube", "youtu.be"],
-        "Telegram": ["telegram.org", "telegram", "t.me"],
-        "Twitter": ["twitter.com", "x.com"],
+        "Facebook":  ["facebook.com", "fb.com"],
+        "Youtube":   ["youtube.com", "youtu.be"],
+        "Telegram":  ["telegram.org", "t.me"],
+        "Twitter":   ["twitter.com", "x.com"],
         "Instagram": ["instagram.com"],
-        "LinkedIn": ["linkedin.com"],
-        "GitHub": ["github.com"],
-        "Reddit": ["reddit.com"],
-        "Wikipedia": ["wikipedia.org"]
+        "LinkedIn":  ["linkedin.com"],
+        "GitHub":    ["github.com"],
+        "Reddit":    ["reddit.com"],
+        "Wikipedia": ["wikipedia.org"],
+        "TikTok":    ["tiktok.com"],
     }
     for site, keywords in social_sites.items():
-        if any(keyword in link for keyword in keywords):
-            return site 
-    
-    # educational sites
+        if any(k in link for k in keywords):
+            return site
+
     educational_sites = {
-        "Coursera": ["coursera.org", "coursera"],
-        "Udemy": ["udemy.com", "udemy"]
+        "Coursera": ["coursera.org"],
+        "Udemy":    ["udemy.com"],
+        "Medium":   ["medium.com"],
     }
     for site, keywords in educational_sites.items():
-        if any(keyword in link for keyword in keywords):
+        if any(k in link for k in keywords):
             return site
-    
-    # news sites
-    news_sites = ["cnn.com", "bbc.com", "aljazeera.com", "reuters.com", "apnews.com"]   
-    if any(keyword in link for keyword in news_sites):
-        return "News Site" 
-    
-    # email 
-    if any(keyword in title for keyword in ["mailto:", "email", "mail", "@"]):
+
+    news_sites = ["cnn.com", "bbc.com", "aljazeera.com", "reuters.com",
+                  "apnews.com", "theguardian.com", "nytimes.com", "bloomberg.com"]
+    if any(k in link for k in news_sites):
+        return "News Site"
+
+    if any(k in title for k in ["mailto:", "@"]):
         return "Email Address"
-    
-    # phone number
-    if any(keyword in title for keyword in ["tel:", "phone", "call", "+"]):
+    if any(k in title for k in ["tel:", "phone"]):
         return "Phone Number"
-    
-    # Government sites
-    government_sites = [".gov", "gouv", "gob", "state.gov"]
-    if any(keyword in link for keyword in government_sites):
+
+    government_sites = [".gov", "gouv", ".gob.", "state.gov"]
+    if any(k in link for k in government_sites):
         return "Government Site"
-    
-    general_sites = ["github.com", "archive.org", "wikipedia.org"]
-    if any(keyword in link for keyword in general_sites):
-        return "General Site"
+
     return "Website"
+
 
 def osint_ex(query):
     try:
@@ -90,17 +93,30 @@ def osint_ex(query):
                 user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
             )
             page = context.new_page()
-            
-            # Navigate to DuckDuckGo
-            page.goto(f"https://duckduckgo.com/?q={query}&t=h_&ia=web", timeout=60000, wait_until="networkidle")
-            
-            # Wait for results
-            time.sleep(3)
-            
-            # Try multiple selectors
-            selectors = ['[data-testid="result"]', '.result', 'article[data-testid="result"]', 'li.result']
+
+            # ── Speed: block images / fonts / stylesheets ────────────────────
+            def block_assets(route):
+                if route.request.resource_type in ('image', 'stylesheet', 'font', 'media'):
+                    route.abort()
+                else:
+                    route.continue_()
+            page.route("**/*", block_assets)
+
+            # ── Navigate ─────────────────────────────────────────────────────
+            page.goto(
+                f"https://duckduckgo.com/?q={query}&t=h_&ia=web",
+                timeout=60000,
+                wait_until="domcontentloaded"   # FIXED: was "networkidle" (hangs)
+            )
+
+            # ── Wait for result containers ───────────────────────────────────
+            selectors = [
+                'article[data-testid="result"]',
+                '[data-testid="result"]',
+                'li.result',
+                '.result',
+            ]
             results_found = False
-            
             for selector in selectors:
                 try:
                     page.wait_for_selector(selector, timeout=10000)
@@ -109,94 +125,104 @@ def osint_ex(query):
                     break
                 except:
                     continue
-            
+
             if not results_found:
                 print("No results selector found")
                 browser.close()
                 return []
-            
-            all_results = []
-            seen_links = set()
-            
-            # Get all results
+
+            # ── Collect result elements ──────────────────────────────────────
             results = []
             for selector in selectors:
                 results = page.query_selector_all(selector)
                 if results:
                     break
-            
-            print(f"Found {len(results)} results")
-            
+
+            print(f"Found {len(results)} result containers")
+
+            all_results = []
+            seen_links = set()
+
+            # Selectors for the title <a> element inside each result
+            # These are also the link elements — get href from the same element!
+            title_selectors = [
+                '[data-testid="result-title-a"]',   # modern DDG
+                'h2 a',                              # fallback
+                '.result__a',                        # old DDG
+                'a.result__a',
+            ]
+
             for result in results:
                 try:
-                    # Get title and link
+                    # ── BUG FIX: find the title <a> element ─────────────────
+                    # Then get BOTH text and href from the SAME element.
+                    # The old code used a separate link_selectors list starting
+                    # with 'a[href]' which matched the favicon anchor first,
+                    # giving a wrong/internal URL while the title was correct.
                     title_elem = None
-                    link_elem = None
-                    
-                    # Try different selectors for title
-                    title_selectors = ['[data-testid="result-title-a"]', 'h2 a', 'h2', '.result__a', 'a.result__a']
                     for ts in title_selectors:
                         title_elem = result.query_selector(ts)
                         if title_elem:
                             break
-                    
-                    # Get link element
-                    link_selectors = ['a[href]', '[data-testid="result-title-a"]', 'a.result__a']
-                    for ls in link_selectors:
-                        link_elem = result.query_selector(ls)
-                        if link_elem:
-                            break
-                    
-                    if title_elem and link_elem:
-                        title_text = title_elem.inner_text().strip()
-                        raw_link = link_elem.get_attribute('href')
-                        
-                        # Clean the URL
-                        clean_link = clean_url(raw_link)
-                        
-                        # Get image
-                        img_elem = result.query_selector('img')
-                        img_src = img_elem.get_attribute('src') if img_elem else None
-                        
-                        # Validate and add result
-                        if title_text and clean_link and 'duckduckgo.com' not in clean_link and clean_link not in seen_links:
-                            # Check if it's a valid URL
-                            if clean_link.startswith('http'):
-                                seen_links.add(clean_link)
-                                site_type = classify_site(clean_link, title_text)
-                                all_results.append({
-                                    "title": title_text,
-                                    "link": clean_link,
-                                    "image": img_src,
-                                    "type": site_type
-                                })
-                                print(f"Added: {title_text[:50]} -> {clean_link[:80]}")
-                                
+
+                    if not title_elem:
+                        continue
+
+                    title_text = title_elem.inner_text().strip()
+
+                    # ── href comes from the SAME element as the title ────────
+                    raw_link = title_elem.get_attribute('href')
+                    clean_link = clean_url(raw_link)
+
+                    if (title_text and clean_link
+                            and clean_link.startswith('http')
+                            and clean_link not in seen_links):
+
+                        seen_links.add(clean_link)
+                        site_type = classify_site(clean_link, title_text)
+
+                        # Optional snippet
+                        snip_el = result.query_selector('[data-testid="result-snippet"]') \
+                                  or result.query_selector('.result__snippet')
+                        snippet = snip_el.inner_text().strip() if snip_el else ""
+
+                        all_results.append({
+                            "title":   title_text,
+                            "link":    clean_link,
+                            "snippet": snippet,
+                            "image":   None,
+                            "type":    site_type,
+                        })
+                        print(f"Added: {title_text[:50]} -> {clean_link[:80]}")
+
                 except Exception as e:
                     print(f"Error processing result: {e}")
                     continue
-            
+
             browser.close()
             print(f"Total valid URLs extracted: {len(all_results)}")
             return all_results
-            
+
     except Exception as e:
         print(f"Error in osint_ex: {e}")
         return []
 
+
 @app.route('/')
 def index():
     return render_template('index.html')
+
 
 @app.route('/search', methods=['POST'])
 def search():
     query = request.form.get('query')
     if not query:
         return jsonify([]), 400
-    
+
     results = osint_ex(query)
     print(f"Returning {len(results)} results for '{query}'")
     return jsonify(results)
+
 
 if __name__ == '__main__':
     print("\n" + "="*60)
@@ -204,5 +230,5 @@ if __name__ == '__main__':
     print("="*60)
     print(f"📍 Server: http://127.0.0.1:5000")
     print("="*60 + "\n")
-    
+
     app.run(debug=False, host='0.0.0.0', port=5000, use_reloader=False)
