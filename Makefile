@@ -38,30 +38,30 @@ run:
 # Installer les dépendances
 .PHONY: install
 install:
-	@echo  Installing dependencies...
+	@echo [*] Installing dependencies...
 	@pip install -r requirements.txt
-	@echo [+] Dependencies installed!
+	@echo [*] Dependencies installed!
 
 # Nettoyer les fichiers cache
 .PHONY: clean
 clean:
-	@echo  Cleaning cache files...
+	@echo [*] Cleaning cache files...
 	@if exist __pycache__ rmdir /s /q __pycache__
 	@if exist templates\__pycache__ rmdir /s /q templates\__pycache__
 	@del /q *.pyc 2>nul
-	@echo [+] Cleaning completed!
+	@echo [*] Cleaning completed!
 
 # Mettre à jour requirements.txt
 .PHONY: update
 update:
-	@echo  Updating requirements.txt...
+	@echo [*] Updating requirements.txt...
 	@pip freeze > requirements.txt
-	@echo [+] requirements.txt updated!
+	@echo [*] requirements.txt updated!
 
 # Mode développement
 .PHONY: dev
 dev:
-	@echo 🐛 Mode développement...
+	@echo [*] 🐛 Mode développement...
 	@set FLASK_ENV=development && set FLASK_DEBUG=1 && $(PYTHON) $(APP)
 
 # Installer et démarrer
